@@ -1,7 +1,7 @@
 const http = require('http')
 const crypto = require('crypto')
 const { spawn } = require('child_process')
-const sendMail = require('./sendMail')
+// const sendMail = require('./sendMail')
 
 function sign(body) {
   const SECRET = '123456'
@@ -36,14 +36,14 @@ const server = http.createServer((req, res) => {
         buffers2.push(buffer)
       })
       child.stdout.on('end', (buffer) => {
-        const logs = Buffer.concat(buffers2).toString()
-        sendMail(
-         `<h1>部署日期: ${new Date()}</h1>
-          <h2>部署人: ${pusherName}</h2>
-          <h2>部署邮箱: ${pusherEmail}</h2>
-          <h2>提交信息: ${commitMsg}</h2>
-          <h2>布署日志: ${logs.replace('\r\n', '<br/>')}</h2>`
-        )
+        // const logs = Buffer.concat(buffers2).toString()
+        // sendMail(
+        //  `<h1>部署日期: ${new Date()}</h1>
+        //   <h2>部署人: ${pusherName}</h2>
+        //   <h2>部署邮箱: ${pusherEmail}</h2>
+        //   <h2>提交信息: ${commitMsg}</h2>
+        //   <h2>布署日志: ${logs.replace('\r\n', '<br/>')}</h2>`
+        // )
       })
     })
   } else {
