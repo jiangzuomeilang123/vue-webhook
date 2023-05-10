@@ -11,13 +11,13 @@ function sign(body) {
 const server = http.createServer((req, res) => {
   console.log(req.method, req.url)
   if (req.method == 'POST' && req.url == '/webhook') {
-    const buffers = []
+    const buffers1 = []
     req.on('data', buffer => {
-      buffers.push(buffer)
+      buffers1.push(buffer)
     })
 
     req.on('end', buffer => {
-      const body = Buffer.concat(buffers)
+      const body = Buffer.concat(buffers1)
       // github发送请求进来，要传递请求体body，还会传一个signature，需验证签名正确与否
       const { 'x-github-event': event, 'x-hub-signature': signature } = req.headers
       if (signature !== sign(body)) return res.end('Not Allowed')
@@ -31,12 +31,12 @@ const server = http.createServer((req, res) => {
         head_commit: { message: commitMsg } = {}
       } = JSON.parse(body)
       const child = spawn('sh', [`./${repoName}.sh`])
-      const buffers = []
+      const buffers2 = []
       child.stdout.on('data', (buffer) => {
-        buffers.push(buffer)
+        buffers2.push(buffer)
       })
       child.stdout.on('end', (buffer) => {
-        const logs = Buffer.concat(buffers).toString()
+        const logs = Buffer.concat(buffers2).toString()
         sendMail(
          `<h1>部署日期: ${new Date()}</h1>
           <h2>部署人: ${pusherName}</h2>
