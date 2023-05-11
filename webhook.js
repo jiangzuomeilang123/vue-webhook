@@ -9,7 +9,7 @@ function sign(body) {
 }
 
 const server = http.createServer((req, res) => {
-  console.log('沃日1', req.method, req.url)
+  console.log('触发', req.method, req.url)
   if (req.method == 'POST' && req.url == '/webhook') {
     const buffers1 = []
     req.on('data', buffer => {
@@ -24,14 +24,14 @@ const server = http.createServer((req, res) => {
       res.setHeader('Content-Type', 'application/json')
       res.end(JSON.stringify({ ok: true }))
       if (event !== 'push') return
-      console.log('沃日2', event, typeof event)
+      console.log('事件', event, typeof event)
       // 开始布署
       const {
         repository: { name: repoName } = {},
         pusher: { name: pusherName, email: pusherEmail } = {},
         head_commit: { message: commitMsg } = {}
       } = JSON.parse(body)
-      console.log('沃日3', repoName, typeof repoName)
+      console.log('参数', repoName, typeof repoName)
       const child = spawn('sh', [`./${repoName}.sh`])
       const buffers2 = []
       child.stdout.on('data', (buffer) => {
